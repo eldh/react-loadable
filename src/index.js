@@ -139,27 +139,16 @@ function createLoadableComponent(loadFn, options) {
       };
     }
 
-    static contextTypes = {
-      loadable: PropTypes.shape({
-        report: PropTypes.func.isRequired,
-      }),
-    };
-
     static preload() {
       return init();
     }
 
-    componentWillMount() {
+    componentDidMount() {
       this._mounted = true;
       this._loadModule();
     }
 
     _loadModule() {
-      if (this.context.loadable && Array.isArray(opts.modules)) {
-        opts.modules.forEach(moduleName => {
-          this.context.loadable.report(moduleName);
-        });
-      }
 
       if (!res.loading) {
         return;
@@ -249,32 +238,6 @@ function LoadableMap(opts) {
 }
 
 Loadable.Map = LoadableMap;
-
-class Capture extends React.Component {
-  static propTypes = {
-    report: PropTypes.func.isRequired,
-  };
-
-  static childContextTypes = {
-    loadable: PropTypes.shape({
-      report: PropTypes.func.isRequired,
-    }).isRequired,
-  };
-
-  getChildContext() {
-    return {
-      loadable: {
-        report: this.props.report,
-      },
-    };
-  }
-
-  render() {
-    return React.Children.only(this.props.children);
-  }
-}
-
-Loadable.Capture = Capture;
 
 function flushInitializers(initializers) {
   let promises = [];

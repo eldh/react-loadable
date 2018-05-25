@@ -223,33 +223,33 @@ describe('preloadReady', () => {
     expect(component.toJSON()).toMatchSnapshot();
   });
 
-  test('one', async () => {
-    let LoadableMyComponent = Loadable({
-      loader: createLoader(200, () => MyComponent),
-      loading: MyLoadingComponent,
-      webpack: () => [1],
-    });
+  // test('one', async () => {
+  //   let LoadableMyComponent = Loadable({
+  //     loader: createLoader(200, () => MyComponent),
+  //     loading: MyLoadingComponent,
+  //     webpack: () => [1],
+  //   });
 
-    await Loadable.preloadReady();
+  //   await Loadable.preloadReady();
 
-    let component = renderer.create(<LoadableMyComponent prop="baz" />);
+  //   let component = renderer.create(<LoadableMyComponent prop="baz" />);
 
-    expect(component.toJSON()).toMatchSnapshot();
-  });
+  //   expect(component.toJSON()).toMatchSnapshot();
+  // });
 
-  test('many', async () => {
-    let LoadableMyComponent = Loadable({
-      loader: createLoader(200, () => MyComponent),
-      loading: MyLoadingComponent,
-      webpack: () => [1, 2],
-    });
+  // test('many', async () => {
+  //   let LoadableMyComponent = Loadable({
+  //     loader: createLoader(200, () => MyComponent),
+  //     loading: MyLoadingComponent,
+  //     webpack: () => [1, 2],
+  //   });
 
-    await Loadable.preloadReady();
+  //   await Loadable.preloadReady();
 
-    let component = renderer.create(<LoadableMyComponent prop="baz" />);
+  //   let component = renderer.create(<LoadableMyComponent prop="baz" />);
 
-    expect(component.toJSON()).toMatchSnapshot();
-  });
+  //   expect(component.toJSON()).toMatchSnapshot();
+  // });
 
   test('missing', async () => {
     let LoadableMyComponent = Loadable({
@@ -261,6 +261,20 @@ describe('preloadReady', () => {
     await Loadable.preloadReady();
 
     let component = renderer.create(<LoadableMyComponent prop="baz" />);
+
+    expect(component.toJSON()).toMatchSnapshot();
+  });
+
+  test('Strict mode', async () => {
+    let LoadableMyComponent = Loadable({
+      loader: createLoader(200, () => MyComponent),
+      loading: MyLoadingComponent,
+      webpack: () => [1, 42],
+    });
+
+    await Loadable.preloadReady();
+
+    let component = renderer.create(<React.StrictMode><LoadableMyComponent prop="baz" /></React.StrictMode>);
 
     expect(component.toJSON()).toMatchSnapshot();
   });
